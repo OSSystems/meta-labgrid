@@ -1,25 +1,10 @@
 DESCRIPTION = "Embedded systems control library for development, testing and installation"
 HOMEPAGE = "https://github.com/labgrid-project"
+DEPENDS += "python3-setuptools-scm-native"
+DEPENDS += "python3-pytest-runner-native"
+
 LICENSE = "LGPL-2.1+"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=c0e9407a08421b8c72f578433434f0bd"
-
-RDEPENDS_${PN} = " \
-    ser2net \
-    libgpiod \
-    python3-attrs \
-    python3-asyncio \
-    python3-autobahn \
-    python3-jinja2 \
-    python3-multiprocessing \
-    python3-pexpect \
-    python3-pyserial \
-    python3-pytest \
-    python3-pyudev \
-    python3-pyyaml \
-    python3-requests \
-    python3-xmodem \
-    python3-graphviz \
-"
 
 SRC_URI = " \
     git://github.com/labgrid-project/labgrid.git;branch=master \
@@ -27,14 +12,31 @@ SRC_URI = " \
     file://labgrid-exporter.service \
     file://environment \
     "
+SRCREV = "d11a5ecc86decd74d3ff86b6fb8b730c9ea4a962"
 
-SRCREV = "30c6cb61e6292f36847e80ec3e5f730ddc4bac72"
 S = "${WORKDIR}/git"
 
-DEPENDS += "python3-setuptools-scm-native"
-DEPENDS += "python3-pytest-runner-native"
-
 inherit setuptools3 systemd
+
+RDEPENDS_${PN} += " \
+    ser2net \
+    libgpiod \
+    ${PYTHON_PN}-ansicolors \
+    ${PYTHON_PN}-attrs \
+    ${PYTHON_PN}-asyncio \
+    ${PYTHON_PN}-autobahn \
+    ${PYTHON_PN}-jinja2 \
+    ${PYTHON_PN}-multiprocessing \
+    ${PYTHON_PN}-pexpect \
+    ${PYTHON_PN}-pyserial \
+    ${PYTHON_PN}-pytest \
+    ${PYTHON_PN}-pyudev \
+    ${PYTHON_PN}-pyusb \
+    ${PYTHON_PN}-pyyaml \
+    ${PYTHON_PN}-requests \
+    ${PYTHON_PN}-xmodem \
+    ${PYTHON_PN}-graphviz \
+"
 
 SYSTEMD_SERVICE_${PN} = "labgrid-exporter.service"
 
@@ -47,3 +49,5 @@ do_install_append() {
 }
 
 FILES_${PN} += "${sysconfdir} ${systemd_system_unitdir}"
+
+BBCLASSEXTEND = "native nativesdk"
